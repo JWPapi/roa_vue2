@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "Quisas";
+  src: url("/fonts/Quisas.eot");
+  src:
+    local("Quisas Regular"),
+    local("Quisas"),
+    url("/fonts/Quisas.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/Quisas.woff2") format("woff2"),
+    url("/fonts/Quisas.woff") format("woff"),
+    url("/fonts/Quisas.ttf") format("truetype"),
+    url("/fonts/Quisas.svg#Quisas") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Resist Sans Display";
+  src: url("/fonts/ResistSansDisplay-Regular.eot");
+  src:
+    local("Resist Sans Display Regular"),
+    local("ResistSansDisplay-Regular"),
+    url("/fonts/ResistSansDisplay-Regular.eot?#iefix")
+    format("embedded-opentype"),
+    url("/fonts/ResistSansDisplay-Regular.woff2") format("woff2"),
+    url("/fonts/ResistSansDisplay-Regular.woff") format("woff"),
+    url("/fonts/ResistSansDisplay-Regular.ttf") format("truetype"),
+    url("/fonts/ResistSansDisplay-Regular.svg#ResistSansDisplay-Regular")
+    format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Resist Sans Display";
+  src: url("/fonts/ResistSansText-Medium.eot");
+  src:
+    local("Resist Sans Display Medium"),
+    local("ResistSansText-Medium"),
+    url("/fonts/ResistSansText-Medium.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/ResistSansText-Medium.woff2") format("woff2"),
+    url("/fonts/ResistSansText-Medium.woff") format("woff"),
+    url("/fonts/ResistSansText-Medium.ttf") format("truetype"),
+    url("/fonts/ResistSansText-Medium.svg#ResistSansText-Medium") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

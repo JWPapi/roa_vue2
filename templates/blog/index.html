@@ -1,0 +1,79 @@
+<div class="mb-16 mt-8 lg:mt-16">
+  <div class="md:hidden mb-8">
+    {{ partial:breadcrumbs }}
+  </div>
+  <h2 class="h3 mb-8">
+    <span class="handwritten">{{ title }}</span>
+  </h2>
+  <roa-tabs :panels="['Articles', 'Inspiration']" prefix="">
+    <template slot="Articles">
+      <ul class="flex flex-wrap justify-center -mx-2">
+        {{ collection:blog unlisted:isnt="true" sort="date:desc" }}
+        <li class="w-full md:w-1/3 px-2 py-6 text-gray-darkest">
+          <a href="{{ url }}">
+            <p class="paragraph-sm">{{ date format="M j, Y" }}</p>
+            {{ asset:image }}
+            <div
+              style="background: url('{{ imgix:image preset='small' }}') {{ focus_css }} / cover no-repeat;"
+              class="h-0 pb-ratio w-full"
+            ></div>
+            {{ /asset:image }}
+            <h3 class="h3 mt-4 mb-2">{{ title }}</h3>
+            <p class="paragraph">{{ subtitle }}</p>
+          </a>
+        </li>
+        {{ /collection:blog }}
+      </ul>
+    </template>
+    <template slot="Inspiration">
+      <p class="small-caps text-center my-8 text-gray-darkest">
+        Click images to expand
+      </p>
+      <Photoswipe>
+        <masonry-list>
+          {{ items }} {{ if artwork }} {{ relate:artwork }}
+          <li>
+            <roa-image
+              src="{{ image }}"
+              :w="700"
+              :h="null"
+              fit="max"
+              sizes="(max-width: 1000px) 50vw, (max-width: 1600px) 33vw, 25vw"
+              lightbox="{{ artist | get:title | smartypants }} – {{ title | smartypants }}"
+              class="w-full"
+            ></roa-image>
+            <div class="flex items-center py-4">
+              <p class="flex-1 paragraph-sm text-gray-darkest">
+                <a href="{{ artist | get:url }}">
+                  {{ artist | get:title }}
+                </a>
+                <br />
+                <a href="{{ url }}">
+                  {{ title }}
+                </a>
+              </p>
+              <roa-icon-link round href="{{ url }}" icon="logo">
+                View on Return on Art
+              </roa-icon-link>
+            </div>
+          </li>
+          {{ /relate:artwork }} {{ else }}
+          <li>
+            <roa-image
+              src="{{ image }}"
+              :w="700"
+              :h="null"
+              fit="max"
+              sizes="(max-width: 1000px) 50vw, (max-width: 1600px) 33vw, 25vw"
+              lightbox="{{ title | smartypants }}"
+              alt="{{ title | smartypants }}"
+              class="w-full"
+            ></roa-image>
+            <p class="paragraph-sm text-gray-darkest py-4">{{ title }}</p>
+          </li>
+          {{ /if }} {{ /items }}
+        </masonry-list>
+      </Photoswipe>
+    </template>
+  </roa-tabs>
+</div>

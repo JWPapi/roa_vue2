@@ -1,0 +1,70 @@
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-control" content="public" />
+<meta name="google" content="notranslate" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta
+  name="description"
+  content="{{ if desc }}{{ desc | strip_tags | safe_truncate:90:... }}{{ else }}{{ if {yield:seodesc} }}{{ yield:seodesc }}{{ else }}{{ site_desc }}{{ /if }}{{ /if }}"
+/>
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@returnonart" />
+<meta
+  name="twitter:title"
+  content="{{ if template != 'home' }}{{ yield:title }}{{ title }}{{ /yield:title }} - {{ /if }}{{ statamify get='store_name' }}"
+/>
+<meta
+  name="twitter:description"
+  content="{{ if desc }}{{ desc | strip_tags | safe_truncate:90:... }}{{ else }}{{ site_description }}{{ /if }}"
+/>
+<meta
+  name="twitter:image"
+  content="{{ if image }}{{ image }}{{ else }}https://returnonart.com/icons/apple-touch-icon.png{{ /if }}"
+/>
+
+<meta
+  property="og:title"
+  content="{{ if template != 'home' }}{{ yield:title }}{{ title }}{{ /yield:title }}{{ /if }}"
+/>
+<meta property="og:url" content="{{ permalink }}" />
+<meta
+  property="og:image"
+  content="{{ if image }}{{ image }}{{ else }}https://returnonart.com/icons/apple-touch-icon.png{{ /if }}"
+/>
+<meta
+  property="og:description"
+  content="{{ if description }}{{ description | strip_tags | safe_truncate:90:... }}{{ else }}{{ site_description }}{{ /if }}"
+/>
+<meta property="og:site_name" content="{{ site_name }}" />
+{{ if template === "artwork" }}
+<meta property="og:type" content="product" />
+{{ if price && inventory > 0 }}
+<meta property="og:availability" content="instock" />
+<meta property="product:price:amount" content="{{ price format_number="2|.|" }}"
+/>
+<meta property="product:price:currency" content="EUR" />
+{{ /if }} {{ else }}
+<meta property="og:type" content="website" />
+{{ /if }}
+
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="/icons/apple-touch-icon.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="/icons/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="/icons/favicon-16x16.png"
+/>
+<link rel="manifest" href="/manifest.json" />
+<meta name="msapplication-TileColor" content="#ffffff" />
+<meta name="theme-color" content="#ffffff" />

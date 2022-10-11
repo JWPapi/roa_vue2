@@ -1,0 +1,11 @@
+Name: {{ first_name }} {{ last_name}}
+Email: {{ email }}
+{{ if phone }}
+Phone: {{ phone }}
+{{ /if }}
+{{ if artwork }}
+Artwork: {{ artwork }}
+{{ /if }}
+
+
+{{ message | decode }}

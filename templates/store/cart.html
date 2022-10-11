@@ -1,0 +1,68 @@
+{{ section:title }}{{ statamify:t key='your_cart' }}{{ /section:title }}
+<cart-page inline-template>
+  <section>
+    <h2 class="my-8 h3">
+      <span class="handwritten">
+        {{ statamify:t key='your_cart' }}
+      </span>
+    </h2>
+    <div v-if="cart.items.length" class="lg:flex w-full items-start gap-4">
+      <ul class="border border-gray-300 p-2 flex-1 mt-4">
+        <header-cart-item
+          v-for="item in cart.items"
+          :key="item.id"
+          :item="item"
+        ></header-cart-item>
+      </ul>
+      <div class="sticky top-0 pt-4 paragraph">
+        <div class="border border-gray-300 p-2">
+          <div class="mb-2 border-b border-gray-300">
+            <div class="gap-4 flex justify-between items-center py-2">
+              <p>Currency</p>
+              <currency-switcher></currency-switcher>
+            </div>
+            <div class="flex justify-between py-2 gap-4">
+              <p class="title">{{ statamify:t key='subtotal' }}</p>
+              <p :class="{'opacity-0': !currentCurrency}">
+                @{{ total.sub | money(currentCurrency) }}
+              </p>
+            </div>
+            <div class="flex justify-between py-2 gap-4">
+              <p>{{ statamify:t key='shipping' }}</p>
+              <p>
+                {{ if shipping }}
+                <span
+                  :class="{'opacity-0': !currentCurrency}"
+                  :text-content.prop="{{ total.shipping }} | money(currentCurrency)"
+                ></span>
+                {{ else }} {{ statamify:t key='no_shipping_available' }} {{ /if
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="flex justify-between pb-2 my-2 border-b border-gray-300">
+            <p>{{ statamify:t key='total' }}</p>
+            <p class="font-medium" :class="{'opacity-0': !currentCurrency}">
+              @{{ total.grand | money(currentCurrency) }}
+            </p>
+          </div>
+          <roa-link-button class="w-full" href="/store/checkout">
+            {{ statamify:t key='proceed' }}
+          </roa-link-button>
+        </div>
+      </div>
+    </div>
+    <p
+      v-else-if="cartLoading"
+      class="text-gray-600 uppercase text-center mx-auto my-16"
+    >
+      Your cart is loading...
+    </p>
+    <div class="flex flex-col justify-center items-center mb-16" v-else>
+      <p class="my-16 text-center">Your cart is empty</p>
+      <roa-link-button secondary href="/store">
+        {{ statamify:t key='go' }}
+      </roa-link-button>
+    </div>
+  </section>
+</cart-page>

@@ -1,0 +1,9 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {{ pages from="/" supplement_taxonomies="false" }}<url>
+    <loc>{{ permalink }}</loc>
+  </url>
+  {{ /pages }}{{ collection from="*" not_from="store_coupons|store_customers" supplement_taxonomies="false" }}<url>
+    <loc>{{ permalink }}</loc>
+  </url>
+  {{ /collection }}
+</urlset>

@@ -1,0 +1,210 @@
+<div class="relative">
+  <div class="md:hidden my-8">
+    {{ partial:breadcrumbs }}
+  </div>
+  <roa-icon-link
+    class="inline-block lg:absolute top-0 left-0"
+    solid
+    href="/blog"
+    icon="arrow-left"
+  >
+    Show all posts
+  </roa-icon-link>
+  <div class="mt-8 lg:mt-16 max-w-2xl mx-auto">
+    <h2 class="h3">
+      {{ title }}
+    </h2>
+    {{ if subtitle }}
+    <h3 class="h4 text-gray-solid">
+      {{ subtitle }}
+    </h3>
+    {{ /if }}
+  </div>
+
+  <section class="mb-16">
+    <Photoswipe>
+      <article class="flex flex-col w-full">
+        {{ content_bard }} {{ if type == "text" }}
+        <div class="prose w-full mx-auto mt-16">
+          {{ text }}
+        </div>
+        {{ elseif type == "image" }}
+        <div
+          class="flex justify-center items-end mx-auto w-full max-w-2xl mt-16 -m-2"
+        >
+          {{ relate:images }}
+          <div class="flex-1 m-2">
+            <roa-image
+              sizes="(max-width: 672px) 100vw, 672px"
+              src="{{ url }}"
+              :w="800"
+              :h="null"
+              lightbox="{{ title | smartypants }}"
+              aria-labelledby="#{{ url }}"
+            ></roa-image>
+          </div>
+          {{ /relate:images }}
+        </div>
+        <div class="flex items-start mx-auto w-full max-w-2xl -m-2">
+          {{ relate:images }}
+          <div class="flex-1 m-2">
+            {{ if title }}
+            <p
+              id="{{ url }}"
+              aria-hidden="true"
+              class="tiny text-gray-solid my-4"
+            >
+              {{ title }}
+            </p>
+            {{ /if }}
+          </div>
+          {{ /relate:images }}
+        </div>
+        {{ elseif type == "artwork" }} {{ if (artworks|length) === 1 }}
+        <section class="flex justify-center mx-auto w-full max-w-2xl mt-16">
+          {{ relate:artworks }}
+          <artwork-list-item
+            class="w-1/2"
+            :artwork="{
+                      image: '{{ image }}',
+                      focalpoint: '{{ image | focus }}',
+                      url: '{{ url }}',
+                      year: '{{ year }}',
+                      title: '{{ title | smartypants }}',
+                      artist: { 
+                        title: '{{ artist | get:title | smartypants }}', 
+                        url: '{{ artist | get:url }}'
+                      },
+                      price: {{ price }},
+                      edition: {{ edition_count or '0' }},
+                      available: Boolean({{ inventory }}),
+                      {{ if shadow === false }}
+                        shadow: false,
+                      {{ else }}
+                        shadow: true,
+                      {{ /if }}
+                    }"
+          ></artwork-list-item>
+          {{ /relate:artworks }}
+        </section>
+        {{ else }} {{ if (artworks|length) >= 4 && use_slider }}
+        <div class="-mx-4 sm:-mx-8 xl:-mx-16 mt-16">
+          <slider-wrapper inset-buttons preset="artworks">
+            {{ relate:artworks }}
+            <artwork-list-item
+              :artwork="{
+                          image: '{{ image }}',
+                          focalpoint: '{{ image | focus }}',
+                          url: '{{ url }}',
+                          year: '{{ year }}',
+                          title: '{{ title | smartypants }}',
+                          artist: { 
+                            title: '{{ artist | get:title | smartypants }}', 
+                            url: '{{ artist | get:url }}'
+                          },
+                          price: {{ price }},
+                          edition: {{ edition_count or '0' }},
+                          available: Boolean({{ inventory }}),
+                          {{ if shadow === false }}
+                            shadow: false,
+                          {{ else }}
+                            shadow: true,
+                          {{ /if }}
+                        }"
+            ></artwork-list-item>
+            {{ /relate:artworks }}
+          </slider-wrapper>
+        </div>
+        {{ elseif (artworks|length) == 3 }}
+        <div
+          class="flex flex-wrap justify-center sm:justify-center mt-16 max-w-6xl mx-auto w-full"
+        >
+          {{ relate:artworks }}
+          <artwork-list-item
+            class="p-2 sm:w-1/3 w-1/2 flex-grow"
+            :artwork="{
+                        image: '{{ image }}',
+                        focalpoint: '{{ image | focus }}',
+                        url: '{{ url }}',
+                        year: '{{ year }}',
+                        title: '{{ title | smartypants }}',
+                        artist: { 
+                          title: '{{ artist | get:title | smartypants }}', 
+                          url: '{{ artist | get:url }}'
+                        },
+                        price: {{ price }},
+                        edition: {{ edition_count or '0' }},
+                        available: Boolean({{ inventory }}),
+                        {{ if shadow === false }}
+                          shadow: false,
+                        {{ else }}
+                          shadow: true,
+                        {{ /if }}
+                      }"
+          ></artwork-list-item>
+          {{ /relate:artworks }}
+        </div>
+        {{ else }}
+        <section
+          class="flex flex-wrap justify-start mx-auto w-full max-w-2xl mt-16"
+        >
+          {{ relate:artworks }}
+          <artwork-list-item
+            class="p-2 w-1/2"
+            :artwork="{
+                        image: '{{ image }}',
+                        focalpoint: '{{ image | focus }}',
+                        url: '{{ url }}',
+                        year: '{{ year }}',
+                        title: '{{ title | smartypants }}',
+                        artist: { 
+                          title: '{{ artist | get:title | smartypants }}', 
+                          url: '{{ artist | get:url }}'
+                        },
+                        price: {{ price }},
+                        edition: {{ edition_count or '0' }},
+                        available: Boolean({{ inventory }}),
+                        {{ if shadow === false }}
+                          shadow: false,
+                        {{ else }}
+                          shadow: true,
+                        {{ /if }}
+                      }"
+          ></artwork-list-item>
+          {{ /relate:artworks }}
+        </section>
+        {{ /if }} {{ /if }} {{ elseif type === "button" }}
+        <roa-link-button class="mx-auto mt-16" href="{{ url }}"
+          >{{ title }}</roa-link-button
+        >
+        {{ elseif type === 'video' }}
+        <div class="w-full max-w-2xl mx-auto">
+          <div class="my-8 w-full relative h-0 overflow-hidden video-wrapper">
+            <iframe
+              src="{{ video | embed_url }}"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+              class="w-full h-full absolute inset-0 border-none"
+            ></iframe>
+          </div>
+        </div>
+        {{ elseif type === 'newsletter_form' }}
+        <section class="max-w-2xl mx-auto w-full mt-16">
+          <h3
+            class="{{ if header_uppercase }} h4-uppercase {{ else }} h4 {{ /if }}"
+          >
+            {{header}}
+          </h3>
+          <newsletter-subscription-form
+            class="w-full mt-8"
+            cta="Subscribe"
+            user-id="{{ env:MAILCHIMP_USER_ID }}"
+            list-id="{{ env:MAILCHIMP_LIST_ID }}"
+          ></newsletter-subscription-form>
+        </section>
+        {{ /if }} {{ /content_bard }}
+      </article>
+    </Photoswipe>
+  </section>
+</div>

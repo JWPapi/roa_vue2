@@ -1,0 +1,91 @@
+---
+title: Summary
+---
+{{ site:checkout_session }}
+{{ section:scripts }}
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  <script>
+
+    if (typeof fbq === "function") {
+        fbq("track", "Purchase", {
+            currency: "{{ currency}}",
+            value: {{ value }},
+        });
+    }
+    const endTime = Date.now() + (5 * 1000);
+    const colors = [
+      "#F94223",
+      "#0072CE",
+      "#F4F5F8",
+      "#4F4F4F",
+    ];
+    confetti({
+      particleCount: 200,
+      angle: 60,
+      startVelocity: 80,
+      spread: 55,
+      origin: { x: 0, y: 1 },
+      colors: colors,
+      disableForReducedMotion: true,
+    });
+    confetti({
+      particleCount: 200,
+      angle: 120,
+      startVelocity: 80,
+      spread: 55,
+      origin: { x: 1, y: 1 },
+      colors: colors,
+      disableForReducedMotion: true,
+    });
+  </script>
+{{ /section:scripts }}
+
+<div class="my-16 text-gray-darkest">
+  <p class="paragraph uppercase text-center mx-auto text-gray-solid">
+    Dear collector,
+  </p>
+  <h3 class="text-center h2 mt-4">
+    <span class="handwritten"> Congratulations!</span>
+  </h3>
+  <p class="text-center paragraph mt-4 mx-auto">
+    Soon you will be the owner of a unique piece of art.
+  </p>
+
+  <h4 class="h4-uppercase paragraph mx-auto mt-16">Check your inbox</h4>
+  <p class="paragraph mt-4 mx-auto">
+    We will send the details of your order to the email address you provided at
+    check-out. If you do not find it directly, please make sure to check your
+    spam folder. Additionally, you will be receiving an email with detailed
+    information on what happens next, as well as the shipping process. On behalf
+    of our team, we’d like to thank you for choosing to support the arts!
+  </p>
+
+  <p class="paragraph mt-4 mx-auto" v-cloak>
+    Don’t forget to follow us on social media and stay in the loop on our latest
+    additions and newly discovered talent.
+  </p>
+  <div class="flex items-center justify-center mt-8" v-cloak>
+    <roa-icon-link
+      icon="instagram"
+      href="https://www.instagram.com/returnonart"
+    >
+      Instagram
+    </roa-icon-link>
+    <roa-icon-link
+      icon="linked-in"
+      href="https://www.linkedin.com/company/return-on-art/"
+    >
+      Linkedin
+    </roa-icon-link>
+    <roa-icon-link icon="medium" href="https://return-on-art.medium.com/">
+      Medium
+    </roa-icon-link>
+    <roa-icon-link
+      icon="pinterest"
+      href="https://www.pinterest.at/Returnonart/"
+    >
+      Linkedin
+    </roa-icon-link>
+  </div>
+</div>
+{{ /site:checkout_session }}

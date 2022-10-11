@@ -1,0 +1,34 @@
+{{ get_content from="/submissions" }}
+<div class="mb-16 mt-8 mx-auto max-w-lg text-gray-darkest">
+  {{ unless institution || institutions|hasWhere:slug:institution || access_tokens|contains:institution }}
+    {{ 404 }}
+  {{ /unless }}
+  {{ institutions where="slug:{institution}" }}
+  <p class="small-caps mb-1">In collaboration with</p>
+  {{ if logo }}
+  <roa-image
+    src="{{ logo }}"
+    alt="{{ title }}"
+    title="{{ title }}"
+    :w="null"
+    :h="null"
+    class="h-32 mb-8 object-contain object-left-top w-full max-w-xs"
+  ></roa-image>
+  {{ else }}
+  <h2 class="mb-16 h2 text-red">
+    {{ title }}
+  </h2>
+  {{ /if }}
+  <h2 class="h3">
+    <span class="handwritten text-gray-solid">{{ headline1 }}</span>
+  </h2>
+  <h1 class="h2 uppercase tracking-wide mb-2">
+    {{ headline2 }}
+  </h1>
+  <p class="paragraph">
+  {{ introtext }}
+  </p>
+  {{ /institutions }}
+  {{ partial:forms/submissions}}
+</div>
+{{ /get_content }}

@@ -1,0 +1,92 @@
+<contact-form inline-template>
+  {{ form:create in="contact" attr="@submit.prevent:onSubmit|ref:form" }}
+  <div class="flex flex-col w-full">
+    {{ if showArtwork }}
+    <p class="h4-uppercase mt-4">{{ artist | get:title }}</p>
+    <p class="paragraph mb-8 mt-2">
+      {{ title }}{{ year ensure_left=", " }}
+    </p>
+    <input
+      type="hidden"
+      name="artwork"
+      value="{{ artist | get:title }}, {{ title }} ({{ permalink }})"
+    />
+    {{ /if }}
+    <roa-input
+      class="my-2"
+      label="First name"
+      required
+      autocomplete="given-name"
+      name="first_name"
+      v-model="firstname"
+    ></roa-input>
+
+    <roa-input
+      class="my-2"
+      label="Last name"
+      required
+      autocomplete="family-name"
+      name="last_name"
+      v-model="lastname"
+    ></roa-input>
+    <roa-input
+      class="my-2"
+      label="Email"
+      type="email"
+      required
+      autocomplete="email"
+      name="email"
+      v-model="email"
+    ></roa-input>
+
+    <roa-textarea
+      class="my-2"
+      rows="4"
+      name="message"
+      v-model="message"
+      label="Message"
+      required
+    ></roa-textarea>
+    <roa-checkbox
+      class="my-2 mt-4"
+      required
+      name="terms"
+      v-model="terms_confirmed"
+    >
+      I Agree to Return on Art's <a href="/terms">Terms and Conditions</a> and
+      <a href="/privacy-policy">Privacy Policy</a>
+    </roa-checkbox>
+    <roa-checkbox
+      class="my-2"
+      name="newsletter"
+      v-model="newsletter_confirmed"
+      label="I want to subscribe to Return on Art newsletter"
+    ></roa-checkbox>
+    <vue-recaptcha
+      :load-recaptcha-script="true"
+      sitekey="{{ recaptcha:site_key }}"
+      size="invisible"
+      @verify="recaptchaVerify"
+      ref="recaptcha"
+    ></vue-recaptcha>
+    <roa-button
+      :loading="loading"
+      :success="success"
+      class="my-2"
+      type="submit"
+      @reset="success = false"
+    >
+      Send
+    </roa-button>
+    <p class="tiny text-gray-dark">
+      This site is protected by reCAPTCHA and the Google
+      <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+      <a href="https://policies.google.com/terms">Terms of Service</a>
+      apply. In order to respond to your enquiry, we will process the personal
+      data you have supplied to communicate with you in accordance with our
+      Privacy Policy. You can unsubscribe or change your preferences at any time
+      by clicking the link in any emails.
+    </p>
+  </div>
+  {{ /form:create }}
+</contact-form>

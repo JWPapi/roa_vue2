@@ -1,0 +1,172 @@
+{{ section:title }}{{ statamify:t key='order_summary' }}{{ /section:title }} {{
+unless old }} {{ redirect to='/store/cart' }} {{ /unless }} {{ old }} {{
+section:datalayer }}
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({
+      'event': 'order',
+      'transactionId': '{{ title }}',
+      'transactionAffiliation': 'Online Store',
+      'transactionTotal': '{{ summary.total.grand }}',
+      'transactionTax': '{{ summary.total.tax }}',
+      'transactionShipping': '{{ summary.total.shipping }}',
+      'transactionProducts': [
+        {{ summary.items }}
+          {
+            'sku': '{{ sku }}',
+            'name': '{{ artist }} - {{ name }}',
+            'price': '{{ price }}',
+            'quantity': '{{ quantity }}'
+          },
+        {{ /summary.items }}
+      ]
+  });
+  dataLayer.push({
+      'event': 'purchase',
+      'ecommerce': {
+          'transaction_id': '{{ title }}',
+          'affiliation': 'Online Store',
+          'value': '{{ summary.total.grand }}',
+          'tax': '{{ summary.total.tax }}',
+          'shipping': '{{ summary.total.shipping }}',
+          'coupon': '{{ summary.coupons.0 or "" }}',
+          'items': [
+          {{ summary.items }}
+          {
+              'item_name': '{{ name }}',
+              'item_id': '{{ product_id }}',
+              'price': '{{ price }}',
+              'item_brand': '{{ artist }}',
+              'quantity': '{{ quantity }}'
+          },
+          {{ /summary.items }}
+          ]
+      }
+  });
+</script>
+{{ /section:datalayer }} {{ section:script }}
+<script>
+  if (typeof fbq === "function") {
+    fbq("track", "Purchase", {
+      currency: "{{ summary.currency.code }}",
+      value: parseFloat("{{ summary.total.grand }}"),
+    });
+  }
+</script>
+{{ /section:script }}
+
+<section>
+  <h2 class="text-center text-2xl my-4">
+    {{ statamify:t key='order' }} {{ title }}
+  </h2>
+  <div class="lg:flex w-full items-start gap-4 mt-4">
+    <ul class="border border-gray-300 p-2 flex-1">
+      {{ summary.items }}
+      <li
+        class="flex items-stretch pb-2 mb-2 gap-2 border-b border-gray-300 last:border-b-0 last:pb-0 last:mb-0"
+      >
+        <img
+          src="{{ imgix:image_original w='400' }}"
+          class="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 object-cover"
+        />
+        <div class="md:flex gap-4 flex-1">
+          <div class="flex-1 flex justify-center flex-col">
+            <p class="block uppercase text-sm tracking-wider">
+              {{ artist | get:title }}
+            </p>
+            <p>{{ name }}</p>
+          </div>
+          <div class="flex gap-4 mt-2 md:mt-0">
+            <div class="flex flex-col">
+              <p class="uppercase text-2xs tracking-wider text-gray-600">
+                Price
+              </p>
+              <div class="flex-1 flex flex-row justify-center items-center">
+                <p>{{ price | statamify.money }}</p>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <p class="uppercase text-2xs tracking-wider text-gray-600">
+                Quantity
+              </p>
+              <div class="flex-1 flex flex-col justify-center items-center">
+                <p>{{ quantity }}</p>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <p class="uppercase text-2xs tracking-wider text-gray-600">
+                Total
+              </p>
+              <div class="flex-1 flex flex-col justify-center items-center">
+                <p>{{ price | multiply:quantity | statamify.money }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      {{ /summary.items }}
+    </ul>
+    <div class="border border-gray-300 p-2 px-4 mt-2 lg:mt-0 lg:w-1/3">
+      <div class="mb-2 border-b border-gray-300">
+        <div class="flex justify-between py-2 gap-4">
+          <p>{{ statamify:t key='date' }}</p>
+          <p>{{ date format="d-m-Y H:i" }}</p>
+        </div>
+        <div class="flex justify-between py-2 gap-4">
+          <p>{{ statamify:t key='subtotal' }}</p>
+          <p>{{ summary.total.sub | statamify.money }}</p>
+        </div>
+        <div class="flex justify-between py-2 gap-4">
+          <p>{{ statamify:t key='discount' }}</p>
+          <p>{{ summary.total.discount | statamify.money }}</p>
+        </div>
+        {{#<div class="flex justify-between py-2 gap-4">
+          <p>{{ statamify:t key='shipping' }}</p>
+          <p>{{ summary.total.shipping | statamify.money }}</p>
+        </div>#}}
+      </div>
+      <div class="flex justify-between my-2 border-gray-300">
+        <p>{{ statamify:t key='total' }}</p>
+        <p class="font-medium">
+          {{ summary.total.grand | statamify.money }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lg:flex w-full items-start gap-4 my-4">
+    <p class="font-medium flex-1">
+      {{ statamify:t key='shipping' }} / {{ statamify:t key='billing' }}
+    </p>
+    <div class="border border-gray-300 p-2 mt-2 lg:mt-0 lg:w-1/3">
+      <strong>{{ statamify:t key='shipping_info' }}:</strong>
+      <br /><br />
+      {{ shipping }} {{ first_name }} {{ last_name }}{{ if company }}, {{
+      company }}{{ /if }} <br />
+      {{ if phone }}{{ phone }}<br />{{ /if }} {{ address }}{{ if address_2 }},
+      {{ address_2 }}{{ /if }}<br />
+      {{ statamify:location }} {{ city }} {{ postal }} {{ if region }}, {{
+      region }}{{ /if }} <br />
+      {{ country }} {{ /statamify:location }}
+      <br /><br />
+      <strong>{{ statamify:t key='address_shipping_method' }}:&nbsp; </strong>
+      {{ shipping_method.name }} {{ /shipping }}
+    </div>
+    <div class="border border-gray-300 p-2 mt-2 lg:mt-0 lg:w-1/3">
+      <strong>{{ statamify:t key='billing_info' }}:</strong>
+      <br />
+      {{ if billing && billing_diff }} {{ billing }} {{ first_name }} {{
+      last_name }}{{ if company }}, {{ company }}{{ /if }} <br />
+      {{ if phone }}{{ phone }}<br />{{ /if }} {{ address }}{{ if address_2 }},
+      {{ address_2 }}{{ /if }}<br />
+      {{ statamify:location }} {{ city }} {{ postal }} {{ if region }}, {{
+      region }}{{ /if }} <br />
+      {{ country }} {{ /statamify:location }} {{ /billing }} {{ else }} {{
+      statamify:t key='address_same' }} {{ /if }}
+      <br /><br />
+      <strong>{{ statamify:t key='address_payment' }}:&nbsp; </strong>
+      {{ t string='{payment_method.name}' }}
+    </div>
+  </div>
+</section>
+{{ /old }}

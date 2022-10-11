@@ -1,0 +1,69 @@
+{{ section:title }}{{ artist | get:title }} – {{ title }} {{ /section:title }}
+<artwork-page
+  :artwork="{
+    exclude_returns: Boolean({{ exclude_returns }}),
+    id: '{{ id }}',
+    title: '{{ title | smartypants }}',
+    medium: '{{ medium | smartypants }}',
+    price: {{ price }},
+    shadow: Boolean({{ shadow }}),
+    width: {{ width }},
+    height: {{ height }},
+    {{ if depth }}
+    depth: {{ depth }},
+    {{ /if }}
+    url: '{{ url }}',
+    image: '{{ image }}',
+    inventory: {{ inventory }},
+    {{ if special_coupon }}
+    special_coupon: '{{ special_coupon }}',
+    {{ /if }}
+    {{ if easter_img }}
+    easter_img: '{{ easter_img }}',
+    {{ /if }}
+    year: {{ year }},
+    gallery: [
+      {{ gallery }}
+        '{{ value }}',
+      {{ /gallery }}
+    ],
+    {{ if {site:shipping_country} }}
+    shipping_country: '{{ site:shipping_country name="true" }}',
+    {{ /if }}
+    {{ if description }}
+    description: `{{ description | smartypants | markdown | sanitize }}`,
+    {{ /if }}
+    {{ relate:artist show_unpublished="true" }}
+    artist: {
+      title: '{{ title | smartypants }}',
+      url: '{{ url }}',
+      artist_spotlight: '{{ artist_spotlight | get:url }}',
+      {{ if allow_coupon_codes===false }}
+        allow_coupon_codes: false,
+      {{ else }}
+        allow_coupon_codes: true,
+      {{ /if }}
+      photo: '{{ photo }}',
+      shipping_notice: '{{ shipping_notice | smartypants }}',
+      description: `{{ description | smartypants | markdown | sanitize }}`,
+      images: [
+        {{ images }}
+          '{{value}}',
+        {{ /images}}
+      ],
+      videos: [
+        {{ videos }}
+          '{{ video | embed_url }}',
+        {{ /videos}}
+      ],
+    },
+    {{ /relate:artist }}
+  }"
+>
+  <template #breadcrumbs>
+    {{ partial:breadcrumbs }}
+  </template>
+  <template #contact-form>
+    {{ partial:forms/contact showArtwork="true" }}
+  </template>
+</artwork-page>

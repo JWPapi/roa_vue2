@@ -1,0 +1,205 @@
+<artist-page inline-template title="{{ title | smartypants }}" id="{{ id }}">
+  <section class="mb-16">
+    <div class="md:hidden mt-8 flex items-center justify-between">
+      {{ partial:breadcrumbs }}
+      <roa-popup label="Share artist">
+          <template #activator="{toggle}">
+            <roa-button
+              class="m-1 flex-shrink-0"
+              @click="toggle"
+              plain
+              icon="share"
+              >Share</roa-button
+            >
+          </template>
+          <social-media-links
+            :artist="{
+              title: '{{ title | smartypants }}',
+              nationality: '{{ nationality | smartypants }}',
+              birthYear: '{{ birth_year }}',
+              url: '{{ current_url }}',
+              image: '{{ photo }}'
+            }"
+          ></social-media-links>
+        </roa-popup>
+    </div>
+    <div class="sm:flex my-8 md:my-16 items-start">
+      <div class="flex-grow mb-4">
+        <h2 class="h2 uppercase text-gray-darkest">{{ title }}</h2>
+        <div class="flex items-end">
+          <p class="paragraph text-gray-solid -mb-px">
+            {{ nationality }}{{ birth_year ensure_left=", " }}
+          </p>
+          {{ if instagram }}
+          <roa-icon-link
+            small
+            class="ml-2 text-gray-darkest"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="{{instagram | instagram}}"
+            icon="instagram"
+            >Instagram</roa-icon-link
+          >
+          {{ /if }} {{ if website }}
+          <roa-icon-link
+            small
+            class="ml-2 text-gray-darkest"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="{{website}}"
+            icon="web"
+            >Instagram</roa-icon-link
+          >
+          {{ /if }}
+        </div>
+      </div>
+      <div
+        class="-m-1 flex flex-row-reverse sm:flex-row justify-end items-center"
+      >
+        <roa-popup label="Share artist" class="md:block hidden">
+          <template #activator="{toggle}">
+            <roa-button
+              class="m-1 flex-shrink-0"
+              @click="toggle"
+              plain
+              icon="share"
+              >Share</roa-button
+            >
+          </template>
+          <social-media-links
+            :artist="{
+              title: '{{ title | smartypants }}',
+              nationality: '{{ nationality | smartypants }}',
+              birthYear: '{{ birth_year }}',
+              url: '{{ current_url }}',
+              image: '{{ photo }}'
+            }"
+          ></social-media-links>
+        </roa-popup>
+        <transition name="fade">
+          <div
+            v-if="artist && artist.followers"
+            v-cloak
+            class="mr-4 ml-4 sm:ml-0 text-center flex-shrink-0"
+          >
+            <p
+              class="paragraph-sm pill w-full inline-block bg-gray-light text-gray-darkest"
+            >
+              @{{ artist.followers }}
+            </p>
+            <p class="small-caps text-gray-darkest">
+              Follower@{{ artist.followers !== 1 ? "s" : "" }}
+            </p>
+          </div>
+        </transition>
+        <roa-button
+          v-cloak
+          :secondary="userFollowsArtist"
+          class="m-1 flex-shrink-0"
+          :icon="userFollowsArtist ? 'checkmark' : 'plus'"
+          @click="toggleArtistFollow({id: '{{ id }}', title: '{{ title }}'})"
+          :loading="followingLoading || $auth.loading"
+        >
+          @{{ userFollowsArtist ? "Following" : "Follow" }}
+        </roa-button>
+      </div>
+    </div>
+    <artist-details 
+      :artist="{
+        photo: '{{ photo }}',
+        description: `{{ description | markdown | sanitize }}`,
+        artist_spotlight: '{{ artist_spotlight | get:url }}',
+        price_increases: [
+          {{ price_increases }}
+            { x: {{ x }}000, y: {{ y }} },
+          {{ /price_increases }}
+        ],
+      }"
+    ></artist-details>
+
+    {{ if images || videos }}
+    <media-gallery
+      class="mb-16"
+      :media="[
+        {{ images }}
+          {
+            src: '{{value}}',
+          },
+        {{ /images}}
+        {{ videos }}
+          {
+            src: '{{ video | embed_url }}',
+            _video: true,
+          },
+        {{ /videos}}
+      ]"
+      :heading="{
+        intro: 'take a look',
+        muted: 'Into the',
+        main: 'studio',
+      }"
+    ></media-gallery>
+    {{ /if }}
+
+    <div class="flex justify-end">
+      <roa-button
+        class="mt-2 flex-shrink-0"
+        icon="artwork"
+        @click="showGalleryView = true"
+      >
+        Gallery view
+      </roa-button>
+    </div>
+    <gallery-view
+      :show="showGalleryView"
+      @close="showGalleryView = false"
+      :artworks="artworksAvailable"
+    >
+    </gallery-view>
+    <div class="flex flex-col items-center justify-center" v-if="loading">
+      <roa-logo type="spinning" class="my-16"></roa-logo>
+      <p class="h4-uppercase">
+        Loading...
+      </p>
+    </div>
+    <roa-tabs
+      v-else
+      :panels="['All', `Available (${artworksAvailable.length})`, soldCount ? `Sold (${soldCount})` : 'Sold']"
+      prefix=""
+    >
+      <template slot="All">
+        <ul
+          v-if="artworksAvailable.length || artworksSold.length"
+          class="masonry mt-8 -mx-4"
+        >
+          <artwork-masonry-list-item
+            v-for="artwork in [...artworksAvailable, ...artworksSold]"
+            :key="artwork.id"
+            :artwork="artwork"
+          ></artwork-masonry-list-item>
+        </ul>
+        <p v-else class="text-gray-solid h4-uppercase m-8">No artworks.</p>
+      </template>
+      <template :slot="`Available (${artworksAvailable.length})`">
+        <ul v-if="artworksAvailable.length" class="masonry mt-8 -mx-4">
+          <artwork-masonry-list-item
+            v-for="artwork in artworksAvailable"
+            :key="artwork.id"
+            :artwork="artwork"
+          ></artwork-list-item>
+        </ul>
+        <p v-else class="text-gray-solid h4-uppercase m-8">No artworks.</p>
+      </template>
+      <template :slot="soldCount ? `Sold (${soldCount})` : 'Sold'">
+        <ul v-if="artworksSold.length" class="masonry mt-8 -mx-4">
+          <artwork-masonry-list-item
+            v-for="artwork in artworksSold"
+            :key="artwork.id"
+            :artwork="artwork"
+          ></artwork-list-item>
+        </ul>
+        <p v-else class="text-gray-solid h4-uppercase m-8">No artworks.</p>
+      </template>
+    </roa-tabs>
+  </section>
+</artist-page>

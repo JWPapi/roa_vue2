@@ -1,0 +1,34 @@
+{{ get_content from="/" }}
+  <landing-page
+    :artists="[
+      {{ relate:featured_artists }}
+        {
+          'title': '{{title | smartypants}}',
+          'id': '{{id}}',
+          'slug': '{{slug}}'
+        },
+      {{ /relate:featured_artists }}
+    ]"
+    :collections="[
+      {{ relate:collections }}
+        {
+          'title': '{{title | smartypants}}',
+          'url': '{{url}}',
+          {{ relate:artworks filter="private_view" limit='1' }}
+          imageUrl: '{{ image }}',
+          focalpoint: '{{ image | focus }}',
+          {{ /relate:artworks }}
+          {{ if cover_image }}
+            imageUrl: '{{ cover_image }}',
+            focalpoint: '{{ cover_image | focus }}',
+          {{ else }}
+            {{ relate:artworks filter="private_view" limit='1' }}
+              imageUrl: '{{ image }}',
+              focalpoint: '{{ image | focus }}',
+            {{ /relate:artworks }}
+          {{ /if }}
+        },
+      {{ /relate:collections }}
+    ]"
+  ></landing-page>
+{{ /get_content }}

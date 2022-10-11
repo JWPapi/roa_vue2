@@ -1,0 +1,248 @@
+@variants responsive {
+  .h1 {
+    font-family: "Resist Sans Display", sans-serif;
+    font-style: normal;
+    font-size: 60px;
+    line-height: 68px;
+    letter-spacing: 0.5px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .h2 {
+    font-family: "Resist Sans Display", sans-serif;
+    font-size: 30px;
+    line-height: 34px;
+    letter-spacing: 1px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    @screen sm {
+      font-family: "Resist Sans Display", sans-serif;
+      font-size: 42px;
+      line-height: 48px;
+      letter-spacing: 0.5px;
+    }
+
+    a {
+      &:hover,
+      &:focus {
+        background: linear-gradient(currentColor, currentColor) 0 1.35em/ 100% 0.1em
+          no-repeat;
+        outline: none;
+      }
+    }
+  }
+
+  .h3 {
+    font-family: "Resist Sans Display", sans-serif;
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: 1px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    @screen sm {
+      font-family: "Resist Sans Display", sans-serif;
+      font-size: 26px;
+      line-height: 32px;
+      letter-spacing: 0.5px;
+    }
+
+    a {
+      &:hover,
+      &:focus {
+        background: linear-gradient(currentColor, currentColor) 0 1.35em/ 100% 0.1em
+          no-repeat;
+        outline: none;
+      }
+    }
+  }
+
+  .h3-uppercase {
+    font-family: "Resist Sans Display", sans-serif;
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: 1px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-transform: uppercase;
+
+    @screen sm {
+      font-family: "Resist Sans Display", sans-serif;
+      font-size: 26px;
+      line-height: 32px;
+      letter-spacing: 0.5px;
+    }
+
+    a {
+      &:hover,
+      &:focus {
+        background: linear-gradient(currentColor, currentColor) 0 1.35em/ 100% 0.1em
+          no-repeat;
+        outline: none;
+      }
+    }
+  }
+
+  .h4 {
+    font-family: "Resist Sans Display", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    line-height: 26px;
+    letter-spacing: 0.5px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    a {
+      &:hover,
+      &:focus {
+        background: linear-gradient(currentColor, currentColor) 0 1.35em/ 100% 0.1em
+          no-repeat;
+        outline: none;
+      }
+    }
+  }
+
+  .h4-uppercase {
+    font-family: "Resist Sans Display", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    line-height: 26px;
+    letter-spacing: 1px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-transform: uppercase;
+
+    a {
+      &:hover,
+      &:focus {
+        background: linear-gradient(currentColor, currentColor) 0 1.35em/ 100% 0.1em
+          no-repeat;
+        outline: none;
+      }
+    }
+  }
+
+  .small-caps {
+    font-family: "Resist Sans Display", sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    line-height: 20px;
+    letter-spacing: 1px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-transform: uppercase;
+
+    a {
+      transition: border-color 300ms, color 300ms;
+      border-bottom: 1px solid transparent;
+
+      &:hover,
+      &:focus {
+        color: theme("colors.gray.darkest");
+        border-color: currentColor;
+        outline: none;
+      }
+    }
+  }
+
+  .paragraph {
+    font-family: "Resist Sans Display", sans-serif;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 65ch;
+
+    a {
+      transition: border-color 300ms, color 300ms;
+      border-bottom: 1px solid transparent;
+
+      &:hover,
+      &:focus {
+        color: theme("colors.gray.darkest");
+        border-color: currentColor;
+        outline: none;
+      }
+    }
+  }
+
+  .paragraph-sm {
+    font-family: "Resist Sans Display", sans-serif;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 65ch;
+
+    a {
+      transition: border-color 300ms, color 300ms;
+      border-bottom: 1px solid transparent;
+
+      &:hover,
+      &:focus {
+        color: theme("colors.gray.darkest");
+        border-color: currentColor;
+        outline: none;
+      }
+    }
+  }
+
+  .tiny {
+    font-style: normal;
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: 0.5px;
+    max-width: 65ch;
+
+    a {
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        outline: none;
+        color: black;
+      }
+    }
+  }
+
+  .pill {
+    @apply px-4 py-1 rounded-md transition-colors duration-300;
+  }
+
+  .pill-dark {
+    @apply pill bg-gray-darkest text-white;
+
+    &:hover {
+      @apply bg-gray-dark;
+    }
+
+    &:focus {
+      @apply outline-black outline-none;
+    }
+  }
+
+  .pill-sold {
+    @apply bg-red text-white handwritten px-2 pb-1 inline-block rounded-md antialiased;
+
+    line-height: 1em;
+    letter-spacing: 1.75px;
+  }
+
+  .handwritten {
+    //styleName: Handwriting heading;
+    font-family: Quisas;
+    font-size: 1.25em;
+    font-style: normal;
+    line-height: 32px;
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-transform: uppercase;
+    vertical-align: -0.04em;
+  }
+}

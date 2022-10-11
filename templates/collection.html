@@ -1,0 +1,124 @@
+<collection-page inline-template v-cloak>
+  {{ relate:artworks :show_future="unlisted" filter="remove_unlisted"
+  :with-unlisted="unlisted" as="artworks" }}
+  <section class="mt-6 lg:mt-16 mb-16">
+    <div class="md:hidden mb-4">
+      {{ partial:breadcrumbs }}
+    </div>
+    <div class="md:flex items-center text-gray-darkest mb-4 md:mt-8">
+      <div class="flex-1 flex items-center text-gray-darkest">
+        <roa-icon-link icon="arrow-left" href="/collections" solid>
+          Back
+        </roa-icon-link>
+        <div class="flex-grow mx-4">
+          <h2 class="h4-uppercase sm:h3-uppercase">
+            {{ title }}
+          </h2>
+          {{ if subtitle }}
+          <h3 class="paragraph text-gray-solid">{{ subtitle }}</h3>
+          {{ /if }}
+        </div>
+      </div>
+      {{ unless no_results }}
+      <div class="items-center flex flex-wrap justify-between mt-4 md:mt-0">
+        <roa-icon-radio
+          :options="[
+                {icon: 'masonry', value: 'cols', label: 'Show column layout'},
+                {icon: 'grid', value: 'grid', label: 'Show grid layout'}, 
+              ]"
+          name="view"
+          v-model="view"
+        ></roa-icon-radio>
+        <roa-button icon="artwork" class="ml-2" @click="showGalleryView = true">
+          Gallery View
+        </roa-button>
+        <gallery-view
+          :show="showGalleryView"
+          @close="showGalleryView = false"
+          :artworks="[
+              {{ artworks }}
+                  {
+                    image: '{{ image }}',
+                    url: '{{ url }}',
+                    title: '{{ title | smartypants }}',
+                    artist: {title: '{{ artist | get:title | smartypants }}'},
+                    year: '{{ year }}',
+                  },
+              {{ /artworks }}
+              ]"
+        ></gallery-view>
+      </div>
+      {{ /unless }}
+    </div>
+    {{ if no_results }}
+    <p class="paragraph text-gray-darkest mt-8">
+      There are no artworks in this collection.
+    </p>
+    {{ else }}
+    <transition name="fade" mode="out-in">
+      <ul class="masonry -mx-4" v-if="view === 'cols'">
+        {{ artworks }}
+        <artwork-masonry-list-item
+          :artwork="{
+            image: '{{ image }}',
+            focalpoint: '{{ image | focus }}',
+            url: '{{ url }}',
+            year: '{{ year }}',
+            title: '{{ title | smartypants }}',
+            artist: { 
+              title: '{{ artist | get:title | smartypants }}', 
+              url: '{{ artist | get:url }}'
+            },
+            price: Number({{ price }}),
+            edition: {{ edition_count or '0' }},
+            available: Boolean({{ inventory  }}),
+            {{ if shadow === false }}
+              shadow: false,
+            {{ else }}
+              shadow: true,
+            {{ /if }}
+          }"
+        ></artwork-masonry-list-item>
+        {{ /artworks }}
+      </ul>
+      <ul v-else class="artworks-grid">
+        {{ artworks }}
+        <artwork-list-item
+          class="artworks-grid-item"
+          :artwork="{
+            image: '{{ image }}',
+            focalpoint: '{{ image | focus }}',
+            url: '{{ url }}',
+            year: '{{ year }}',
+            title: '{{ title | smartypants }}',
+            artist: { 
+              title: '{{ artist | get:title | smartypants }}', 
+              url: '{{ artist | get:url }}'
+            },
+            price: Number({{ price }}),
+            edition: Number({{ edition_count }}),
+            available: Boolean({{ inventory  }}),
+            {{ if shadow === false }}
+              shadow: false,
+            {{ else }}
+              shadow: true,
+            {{ /if }}
+          }"
+        ></artwork-list-item>
+        {{ /artworks }}
+      </ul>
+    </transition>
+    {{ /if }} {{ if description }}
+    <h4 class="tiny uppercase tracking-wide mt-16">Editor's note</h4>
+    <p class="paragraph text-gray-darkest my-6" style="max-width:100%;font-size:20px">
+      {{ description }}
+    </p>
+    {{ /if }}
+    <div class="flex flex-col items-center">
+      <roa-link-button href="/collections" secondary class="mt-16"
+        >View all collections</roa-link-button
+      >
+    </div>
+  </section>
+  {{ /relate:artworks }}
+</collection-page>

@@ -1,0 +1,21 @@
+<head>
+  <title>
+    {{ if template != 'home' }}
+      {{ yield:title }}
+        {{ title }}
+      {{ /yield:title }} |
+    {{ /if }}
+    {{ statamify get='store_name' }}
+  </title>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {{ mix:css src={theme} tag="true" }}
+  {{ partial:meta }}
+  {{ partial:config }}
+  {{ if environment === 'production' }}
+    {{ partial:gtm }}
+    {{ partial:mailchimp }}
+    {{ partial:rewardful }}
+  {{ /if }}
+</head>

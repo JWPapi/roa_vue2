@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ partial:head }}
+  <body class="font-sans antialiased">
+    {{ yield:after_body }}
+    <div id="main" @dragover.prevent @drop.prevent>
+      <the-header 
+        :transparent="Boolean({{ alternate_header }})"
+        {{ if show_notice }}
+          :notice="{text: '{{ notice | smartypants }}', target: '{{ notice_target }}', color: '{{ notice_color }}'}"
+        {{ /if }}
+      >
+        <template #default="{showMenu, width, breakpoint}">
+          <ul
+            class="text-xl flex flex-grow justify-start md:justify-end flex-col md:flex-row"
+          >
+            {{ nav
+              from="/" 
+              top_navigation:is="true" 
+              scope="item"
+              supplement_taxonomies="false"
+            }}
+              <transition name="header-items">
+                <li v-if="showMenu || width >= breakpoint">
+                  <a
+                    href="{{ item:url }}"
+                    class="h4-uppercase md:h-full flex items-center py-6 md:py-0 border-b md:border-b-2 md:paragraph-sm uppercase mx-8 md:px-5 xl:px-6 md:mx-0 focus:outline-none transition-colors duration-300 focus:border-current hover:border-current {{ if segment_1 === item:slug }} border-current font-medium hover:border-gray focus:border-gray {{ else }} border-gray-light md:border-transparent {{ /if }}"
+                  >
+                    {{ item:title }}
+                  </a>
+                </li>
+              </transition>
+            {{ /nav }}
+          </ul>
+        </template>
+      </the-header>
+      <main
+        class="flex-1 {{ if !no_padding }} px-4 sm:px-8  xl:px-16 {{ /if }}{{ main_class ensure_left=' ' }} overflow-hidden"
+      >
+        {{ template_content }}
+      </main>
+      <the-footer 
+        mailchimp-user-id="{{ env:MAILCHIMP_USER_ID }}"
+        mailchimp-list-id="{{ env:MAILCHIMP_LIST_ID }}"
+        {{ nav from="/" slug:is="private-view" }} 
+          with-private-view
+        {{ /nav }}
+      >
+        <template #contact-form>
+          <roa-logo class="mx-auto mt-4 mb-6"></roa-logo>
+          <h3 class="h3-uppercase mb-4 text-center">Enquiry Form</h3>
+          {{ partial:forms/contact }}
+        </template>
+      </the-footer>
+      <portal-target name="modal" multiple></portal-target>
+      <portal-target name="search"></portal-target>
+      <roa-toast-container></roa-toast-container>
+    </div>
+
+    {{ yield:scripts }}
+    {{ mix:js src="manifest" tag="true" }}
+    {{ mix:js src="vendor" tag="true" }}
+    {{ mix:js src={theme} tag="true" }}
+  </body>
+</html>

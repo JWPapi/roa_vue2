@@ -1,0 +1,25 @@
+<frequently-asked-questions-page
+  :contents="{{ contents | to_json | sanitize }}"
+  inline-template
+>
+  <section class="mt-6 lg:mt-16 mb-16">
+    <div class="md:hidden mb-8">
+      {{ partial:breadcrumbs }}
+    </div>
+    <h2 class="h3 mb-8">
+      <span class="handwritten">FAQ</span>
+    </h2>
+
+    <roa-tabs :panels="categories">
+      <template :slot="category.title" v-for="category in contents">
+        <ul class="paragraph divide-y divide-gray-light mt-8">
+          <li v-for="question in category.questions" :key="question.question" v-if="question.visible">
+            <roa-collapse :label="question.question">
+              <div class="prose-light" v-html="question.answer"></div>
+            </roa-collapse>
+          </li>
+        </ul>
+      </template>
+    </roa-tabs>
+  </section>
+</frequently-asked-questions-page>

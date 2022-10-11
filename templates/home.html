@@ -1,0 +1,332 @@
+<home-page inline-template
+  :featured-artists="[
+    {{ relate:featured_artists }}
+      {{ unless no_results }}
+        {
+          'title': '{{ title | smartypants }}',
+          'id': '{{ id }}',
+          'slug': '{{ slug }}',
+          'url': '{{ url }}',
+        },
+      {{ /unless }}
+    {{ /relate:featured_artists }}
+  ]"
+>
+  <div>
+    <hero-carousel
+      :slides="[
+        {{ slider }}
+          {
+            image: '{{ image }}',
+            focalpoint: '{{ image | focus_css }}',
+            title: '{{ header | smartypants }}',
+            subtitle: '{{ subheader | smartypants }}',
+            url: '{{ url }}',
+          },
+        {{ /slider }}
+      ]">
+    </hero-carousel>
+    {{ if show_banner }}
+      <p class="-mx-4 sm:-mx-8 xl:-mx-16 p-3 text-white text-center" :style="{backgroundColor: '{{ banner_color }}'}">
+        {{ banner_text_left | widont }}
+          <roa-icon class="mx-1 inline-block text-lg" name="delivery"></roa-icon>
+        {{ banner_text_right | widont }}
+      </p>
+    {{ /if }}
+    {{# FEATURES SECTION #}}
+    <ul class="-mx-4 sm:-mx-8 xl:-mx-16 bg-gray-lightest py-4 px-4 sm:px-16 md:flex md:justify-around">
+      <li class="sm:mx-8 my-8 md:my-12 flex md:flex-col md:items-center md:text-center justify-center">
+        <a href="/artworks" class="w-20 mt-2 md:mt-0 md:w-auto">
+          <svg aria-hidden="true" width="32" height="41" viewBox="0 0 32 41" fill="none" xmlns="http://www.w3.org/2000/svg" class="h2 text-gray-darkest">
+            <path d="M31.5 13.5H10.5V40.5H31.5V13.5Z" stroke="currentColor"/>
+            <path d="M10.5 34H6V7H27V13.5" stroke="currentColor"/>
+            <path d="M6 28H1V1H22V7" stroke="currentColor"/>
+          </svg>
+          <span class="sr-only">Artworks page</span>
+        </a>
+        <div>
+          <h3 class="paragraph uppercase md:h4-uppercase text-gray-darkest md:my-6"><a href="/artworks">Art made more accessible</a></h3>
+          <p class="paragraph text-gray-solid">Transparent pricing. Easy payment. No jargon.</p>
+        </div>
+      </li>
+      <li class="sm:mx-8 my-8 md:my-12 flex md:flex-col md:items-center md:text-center justify-center">
+        <a href="/artists" class="w-20 mt-2 md:mt-0 md:w-auto">
+          <svg aria-hidden="true" width="39" height="34" viewBox="0 0 39 34" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-darkest h2">
+            <path d="M10.7403 3.10426e-07C7.99058 3.10426e-07 5.24089 1.05026 3.14504 3.15079C1.11762 5.18773 0 7.89349 0 10.7747C0 13.6534 1.11762 16.3592 3.14504 18.3961L15.9381 31.2332C15.9533 31.251 15.9609 31.2714 15.9786 31.2892L16.896 32.2097C16.9138 32.2275 16.9366 32.2352 16.9543 32.2504L18.1302 33.4304C18.4977 33.7991 18.9868 34 19.5063 34C20.0259 34 20.515 33.7991 20.8824 33.4304L35.855 18.3961C37.8824 16.3592 39 13.6534 39 10.7747C39 7.89349 37.8824 5.18773 35.855 3.15079C31.6658 -1.05026 24.8511 -1.05026 20.662 3.15079L19.4987 4.31803L18.338 3.15079C16.2422 1.05026 13.4925 3.10426e-07 10.7403 3.10426e-07ZM10.7403 1.30202C13.1605 1.30202 15.5782 2.22513 17.4181 4.0739L18.5839 5.24114L17.1317 6.69574C16.8783 6.95004 16.8783 7.362 17.1317 7.61631C17.2584 7.74346 17.4232 7.80703 17.5904 7.80703C17.7577 7.80703 17.9224 7.74346 18.0491 7.61631L20.6848 4.97158L21.5819 4.0739C25.2642 0.378909 31.2527 0.378909 34.935 4.0739C36.7191 5.86163 37.7024 8.24188 37.7024 10.7747C37.7024 13.305 36.7191 15.6853 34.935 17.473L19.965 32.5073C19.7192 32.7539 19.2935 32.7565 19.0476 32.5073L4.06245 17.473C2.28085 15.6853 1.29755 13.305 1.29755 10.7747C1.29755 8.24188 2.28085 5.86417 4.06245 4.0739C5.90487 2.22513 8.32257 1.30202 10.7403 1.30202ZM28.6196 8.45804C28.4549 8.45804 28.2876 8.52162 28.1609 8.64877L17.5904 19.2556L12.8589 14.5079C12.6055 14.2536 12.1949 14.2536 11.9415 14.5079C11.6881 14.7622 11.6881 15.1741 11.9415 15.4284L17.1317 20.6365C17.2584 20.7637 17.4232 20.8272 17.5904 20.8272C17.7577 20.8272 17.9224 20.7637 18.0491 20.6365L29.0783 9.56933C29.3317 9.31503 29.3317 8.90307 29.0783 8.64877C28.9516 8.52162 28.7843 8.45804 28.6196 8.45804Z" fill="currentColor"/>
+          </svg>
+          <span class="sr-only">Artists page</span>
+        </a>
+        <div>
+          <h3 class="paragraph uppercase md:h4-uppercase text-gray-darkest md:my-6"><a href="/artists">Support artists you love</a></h3>
+          <p class="paragraph text-gray-solid">Our low commission means artists get fair pay.</p>
+        </div>
+      </li>
+      <li class="sm:mx-8 my-8 md:my-12 flex md:flex-col md:items-center md:text-center justify-center">
+        <a href="/artworks" class="w-20 mt-2 md:mt-0 md:w-auto">
+          <svg aria-hidden="true" width="40" height="39" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-darkest h2">
+            <path d="M20.0062 0.141602C19.7949 0.141602 19.6042 0.269678 19.5201 0.469141L14.1901 12.7057L0.00488281 14.2405L10.5992 24.0184L7.64199 38.3041L20.0185 30.9996L20.1046 31.073L20.1477 31.0982L20.6173 31.1255L20.9208 30.7581L20.8142 30.2899L20.6727 30.166L20.6296 30.1408L20.4594 30.1303C20.3896 30.0043 20.2748 29.912 20.1395 29.8721C20.0041 29.8343 19.8585 29.8532 19.7375 29.9246L9.15752 36.1709L11.7538 23.6341L2.45762 15.0572L14.9038 13.7093L20.1025 1.7751L20.2194 1.87168L20.6747 1.7583L20.8593 1.31528L20.8162 1.13262L20.7957 1.08223L20.5065 0.838672C20.5537 0.674903 20.525 0.498535 20.4266 0.36206C20.3281 0.223486 20.1723 0.143701 20.0062 0.141602ZM21.3022 2.79131L20.8449 2.90469L20.6604 3.3477L20.7055 3.53247L20.7239 3.58286L21.089 3.8873L21.5442 3.77393L21.7309 3.33091L21.6857 3.14824L21.6652 3.09785L21.3022 2.79131ZM22.1718 4.80693L21.7145 4.92031L21.5299 5.36543L21.575 5.5481L21.5955 5.59849L21.9585 5.90293L22.4138 5.78955L22.6004 5.34653L22.5553 5.16387L22.5348 5.11348L22.1718 4.80693ZM23.0413 6.82256L22.584 6.93594L22.4015 7.38105L22.4445 7.56372L22.465 7.61411L22.828 7.91855L23.2833 7.80518L23.4699 7.36216L23.4269 7.17949L23.4043 7.1291L23.0413 6.82256ZM23.9129 8.83818L23.4535 8.95156L23.271 9.39668L23.3141 9.57934L23.3346 9.62974L23.6976 9.93418L24.1549 9.8229L24.3395 9.37988L24.2964 9.19512L24.2738 9.14473L23.9129 8.83818ZM24.7824 10.8538L24.323 10.9672L24.1405 11.4123L24.1836 11.595L24.2062 11.6454L24.5671 11.9498L25.0244 11.8385L25.209 11.3955L25.1659 11.2107L25.1434 11.1604L24.7824 10.8538ZM25.7073 12.6952L25.2664 12.8652L25.1352 13.3271L25.4182 13.7114L25.5945 13.7639L25.6479 13.7702L26.0888 13.6001L26.22 13.1361L25.937 12.754L25.7586 12.6994L25.7073 12.6952ZM27.8483 12.9261L27.4074 13.0941L27.2762 13.5581L27.5592 13.9423L27.7355 13.9948L27.7889 14.0011L28.2277 13.8311L28.359 13.3691L28.078 12.9849L27.8996 12.9324L27.8483 12.9261ZM29.9873 13.1592L29.5484 13.3271L29.4172 13.7891L29.6981 14.1754L29.8766 14.2258L29.9278 14.2321L30.3687 14.0641L30.5 13.6001L30.217 13.2159L30.0406 13.1634L29.9873 13.1592ZM32.1283 13.388L31.6874 13.5602L31.5562 14.0221L31.8392 14.4042L32.0176 14.4588L32.0688 14.463L32.5098 14.2951L32.641 13.8311L32.358 13.4468L32.1816 13.3943L32.1283 13.388ZM34.2673 13.6211L33.8284 13.7891L33.6972 14.2531L33.9802 14.6373L34.1586 14.6898L34.2099 14.6961L34.6508 14.526L34.782 14.0641L34.499 13.6799L34.3206 13.6274L34.2673 13.6211ZM36.4083 13.8541L35.9694 14.0221L35.8382 14.484L36.1212 14.8704L36.2996 14.9229L36.3509 14.927L36.7918 14.757L36.923 14.2951L36.638 13.9108L36.4616 13.8583L36.4083 13.8541ZM38.5493 14.083L38.1104 14.2531L37.9792 14.715L38.2602 15.0992L38.4406 15.1538L38.4919 15.158L38.9328 14.99L39.0641 14.5281L38.779 14.1418L38.6026 14.0914L38.5493 14.083ZM37.1794 15.4352L37.0235 15.5359L36.9846 15.5716L36.8144 16.0209L37.0625 16.4283L37.5301 16.4703L37.6859 16.3695L37.727 16.3338L37.8972 15.8866L37.649 15.4771L37.1794 15.4352ZM35.5818 16.9112L35.4239 17.012L35.385 17.0477L35.2147 17.4949L35.4629 17.9043L35.9305 17.9463L36.0884 17.8455L36.1273 17.8098L36.2996 17.3605L36.0515 16.9532L35.5818 16.9112ZM33.9843 18.3872L33.8243 18.4859L33.7874 18.5237L33.6151 18.9709L33.8633 19.3803L34.3329 19.4223L34.4888 19.3215L34.5277 19.2858L34.7 18.8365L34.4519 18.4271L33.9843 18.3872ZM32.3847 19.8611L32.2268 19.9619L32.1878 19.9976L32.0176 20.4469L32.2637 20.8563L32.7333 20.8962L32.8912 20.7955L32.9302 20.7598L33.1004 20.3125L32.8522 19.9031L32.3847 19.8611ZM30.7851 21.3393L30.6292 21.4379L30.5902 21.4736L30.418 21.9229L30.6661 22.3303L31.1337 22.3723L31.2916 22.2715L31.3306 22.2379L31.5028 21.7865L31.2547 21.3791L30.7851 21.3393ZM29.1875 22.8132L29.0296 22.914L28.9906 22.9497L28.8184 23.3969L29.0665 23.8084L29.5361 23.8483L29.694 23.7475L29.731 23.7118L29.9032 23.2625L29.6551 22.8531L29.1875 22.8132ZM29.2859 24.2703L28.8143 24.285L28.5456 24.6818L28.5518 24.8687L28.5641 24.9233L28.8573 25.297L29.327 25.2823L29.5956 24.8876L29.5895 24.6986L29.5792 24.6461L29.2859 24.2703ZM29.733 26.4266L29.2634 26.4413L28.9927 26.836L28.9988 27.025L29.0111 27.0775L29.3044 27.4533L29.7761 27.4386L30.0427 27.0418L30.0386 26.8549L30.0263 26.8003L29.733 26.4266ZM30.1821 28.5808L29.7125 28.5955L29.4418 28.9902L29.45 29.1813L29.4582 29.2338L29.7535 29.6096L30.2231 29.5949L30.4918 29.1981L30.4856 29.0091L30.4754 28.9566L30.1821 28.5808ZM30.6312 30.7371L30.1596 30.7518L29.8909 31.1465L29.8971 31.3355L29.9094 31.3901L30.2026 31.7638L30.6723 31.7491L30.9409 31.3544L30.9348 31.1654L30.9245 31.1129L30.6312 30.7371ZM22.0241 31.2137L21.7206 31.5812L21.8272 32.0494L21.9687 32.1732L22.0139 32.1984L22.4835 32.2278L22.787 31.8604L22.6804 31.3901L22.5368 31.2683L22.4937 31.241L22.0241 31.2137ZM23.8883 32.3139L23.5848 32.6834L23.6914 33.1517L23.8329 33.2734L23.8801 33.2986L24.3477 33.328L24.6512 32.9606L24.5445 32.4924L24.403 32.3685L24.3579 32.3412L23.8883 32.3139ZM31.0783 32.8913L30.6087 32.906L30.338 33.3007L30.3441 33.4918L30.3564 33.5443L30.6497 33.9201L31.1214 33.9033L31.388 33.5086L31.3839 33.3196L31.3716 33.2671L31.0783 32.8913ZM25.7524 33.4162L25.4489 33.7836L25.5556 34.2519L25.6991 34.3736L25.7422 34.4009L26.2118 34.4303L26.5153 34.0608L26.4087 33.5926L26.2672 33.4687L26.2221 33.4414L25.7524 33.4162ZM27.6187 34.5164L27.3151 34.8838L27.4218 35.3541L27.5633 35.4738L27.6084 35.5011L28.078 35.5305L28.3815 35.161L28.2749 34.6928L28.1313 34.5689L28.0883 34.5437L27.6187 34.5164ZM31.5274 35.0455L31.0578 35.0623L30.7871 35.457L30.7933 35.6481L30.8035 35.7006L31.0988 36.0764L31.5685 36.0596L31.8371 35.6649L31.831 35.4759L31.8207 35.4234L31.5274 35.0455ZM29.4828 35.6166L29.1793 35.984L29.2859 36.4543L29.4274 36.574L29.4726 36.6013L29.9422 36.6307L30.2457 36.2633L30.1391 35.793L29.9976 35.6712L29.9504 35.6439L29.4828 35.6166ZM31.347 36.7168L31.0435 37.0863L31.1501 37.5545L31.2937 37.6763L31.3367 37.7036L31.8063 37.7309L32.1099 37.3635L32.0032 36.8932L31.8617 36.7714L31.8166 36.7441L31.347 36.7168Z" fill="#2D2926"/>
+          </svg>
+          <span class="sr-only">Artworks page</span>
+        </a>
+        <div>
+          <h3 class="paragraph uppercase md:h4-uppercase text-gray-darkest md:my-6"><a href="/artworks">Quality, not quantity</a></h3>
+          <p class="paragraph text-gray-solid">Original artworks, handpicked by our curators.</p>
+        </div>
+      </li>
+    </ul>
+
+    {{# RECENT ARTWORKS SECTION #}}
+    <artworks-slider class="my-16" :artworks="recentArtworks" :heading="{
+      intro: 'Discover',
+      muted: 'Newly',
+      main: 'added',
+      cta: 'Discover more',
+      href: '/artworks'
+    }"></artworks-slider>
+
+    {{# FEATURED COLLECTIONS SECTION #}}
+    <section class="my-8 -mx-4 sm:-mx-8 xl:-mx-16 px-4 sm:px-8 xl:px-16 py-16 bg-gray-lightest flex">
+      <div class="flex flex-col justify-between lg:w-1/3 w-full xl:pr-16 lg:mr-8">
+        <h2 class="h2 uppercase" data-aos="appear"><a href="/collections">Curated Collections</a></h2>
+        <div class="lg:hidden mt-10 mb-16 -mx-4 sm:-mx-8 xl:-mx-16">
+          <slider-wrapper :controls="false" preset="collections">
+            {{ relate:collections scope="collect" }}
+              <collection-list-item
+                class="p-2 w-1/2 flex-grow min-w-0"
+                {{ if cover_image }}
+                  image="{{ cover_image }}"
+                  focalpoint="{{ cover_image | focus }}"
+                {{ else }}
+                  {{ relate:artworks filter="private_view" limit='1' }}
+                    image="{{ image }}"
+                    focalpoint="{{ image | focus }}"
+                  {{ /relate:artworks }}
+                {{ /if }}
+                url="{{ collect:url }}"
+                title="{{ collect:title | smartypants | widont }}"
+              ></collection-list-item>
+            {{ /relate:collections }}
+          </slider-wrapper>
+        </div>
+        <div class="max-w-xs" data-aos="appear">
+          <p class="h4 text-gray-darkest mb-8">
+            The Return on Art Curated Collections showcase a handpicked selection of contemporary artworks by up-and-coming artists from all over the world.
+          </p>
+          <roa-link-button class="w-full" href="/collections">Discover the collections</roa-link-button>
+        </div>
+      </div>
+      <ul class="-m-2 flex-wrap flex-1 hidden lg:flex">
+        {{ relate:collections limit="4" scope="collect" }}
+          <collection-list-item 
+            data-aos="appear"
+            {{ if (index | mod:2) == 0 }}
+              data-aos-delay="400"
+            {{ /if }}
+            class="p-2 w-1/2 2xl:w-1/3 flex-grow"
+            {{ if cover_image }}
+              image="{{ cover_image }}"
+              focalpoint="{{ cover_image | focus }}"
+            {{ else }}
+              {{ relate:artworks filter="private_view" limit='1' }}
+                image="{{ image }}"
+                focalpoint="{{ image | focus }}"
+              {{ /relate:artworks }}
+            {{ /if }}
+            url="{{ collect:url }}"
+            title="{{ collect:title | smartypants | widont }}"
+          ></collection-list-item>
+        {{ /relate:collections }}
+        {{ relate:collections offset="4" as="related_collections" }}
+          {{ related_collections scope="collect" }}
+          <collection-list-item 
+            data-aos="appear"
+            {{ if (index | mod:2) == 0 }}
+              data-aos-delay="400"
+            {{ /if }}
+            class="p-2 w-1/3 flex-grow hidden 2xl:block"
+            {{ if cover_image }}
+              image="{{ cover_image }}"
+              focalpoint="{{ cover_image | focus }}"
+            {{ else }}
+              {{ relate:artworks filter="private_view" limit='1' }}
+                image="{{ image }}"
+                focalpoint="{{ image | focus }}"
+              {{ /relate:artworks }}
+            {{ /if }}
+            url="{{ collect:url }}"
+            title="{{ collect:title | smartypants | widont }}"
+          ></collection-list-item>
+          {{ /related_collections }}
+        {{ /relate:collections }}
+      </ul>
+    </section>
+
+    {{# FEATURED ARTISTS SECTIONS #}}
+
+    <artworks-slider
+      v-for="{ artist, artworks } in featuredArtistsArtworks"
+      :key="artist.title"
+      class="mt-16"
+      :artworks="artworks"
+      :heading="{
+        intro: 'Featured Artist',
+        main: artist.title,
+        href: artist.url,
+        cta: 'Discover more',
+      }"
+    ></artworks-slider>
+
+    {{# NEWLY ADDED ARTISTS SECTION #}}
+    <section class="my-16" data-aos="appear" >
+      <section-heading v-bind="{muted: 'Newly added', main: 'artists', cta: 'Discover more', href: '/artists'}"></section-heading>
+      <ul class="flex flex-wrap -m-2 md:mt-4">
+        <artist-collection-list-item
+          v-for="(artist, idx) in latestArtists.map(extendArtist).slice(0,4)"
+          :key="artist.id"
+          class="p-2 md:py-12 w-1/2 md:w-1/4 flex-grow"
+          :image="artist.image"
+          :focalpoint="artist.focalpoint"
+          :url="artist.url"
+          :artist="artist.title"
+          :nationality="artist.nationality"
+          :birth-year="artist.birth_year"
+        ></artist-collection-list-item>
+      </ul>
+      <roa-link-button href="/artists" class="w-full mt-8 sm:hidden">Discover More</roa-link-button>
+    </section>
+
+    {{# TRENDING ARTISTS SECTION #}}
+    <section class="my-16" data-aos="appear">
+      <section-heading v-bind="{muted: 'Trending', main: 'artists', cta: 'Discover more', href: '/artists'}"></section-heading>
+      <ul v-if="!trendingArtistsLoading" class="flex flex-wrap -m-2 mt-12 md:mt-4">
+        <artist-collection-list-item
+          v-for="(artist, idx) in extendedTrendingArtists"
+          :key="artist.id"
+          class="p-2 md:py-12 w-1/2 md:w-1/4 flex-grow"
+          :image="artist.image"
+          :focalpoint="artist.focalpoint"
+          :url="artist.url"
+          :artist="artist.title"
+          :nationality="artist.nationality"
+          :birth-year="artist.birth_year"
+        ></artist-collection-list-item>
+      </ul>
+      <roa-link-button href="/artists" class="w-full mt-8 sm:hidden">Discover More</roa-link-button>
+    </section>
+
+    {{# ART MATCH SECTION #}}
+    <section class="md:flex bg-gray-lightest -mx-4 sm:-mx-8 xl:-mx-16 py-16 px-4 sm:px-8 md:px-16">
+      <div class="flex flex-col justify-between md:w-1/3 md:pr-16">
+        <h2 class="h2 uppercase mb-16" data-aos="appear">
+          <a href="/match">
+            <span class="text-gray-solid">Art</span><br />
+            <span class="handwritten text-gray-darkest">Match</span>
+          </a>
+        </h2>
+        <div class="text-gray-darkest max-w-xs" data-aos="appear" data-aos-delay="500">
+          <p class="paragraph-sm uppercase">
+            Create your taste profile
+          </p>
+          <p class="h4 my-6">
+            Swipe left or right to select your favorites and discover a selection of artworks tailored directly to your individual taste.
+          </p>
+          <roa-link-button href="/match" class="w-full hidden md:flex"
+            >Start</roa-link-button
+          >
+        </div>
+      </div>
+      <ul class="flex-1 flex my-16 justify-between md:justify-center items-center" data-aos="appear" data-aos-delay="250">
+        <li
+          class="flex-shrink-0 text-gray-darkest flex flex-col items-center justify-center"
+        >
+          <roa-icon-link href="/match" icon="arrow-left" round></roa-icon-link>
+          <p class="handwritten">Pass</p>
+        </li>
+        <li class="transition-transform duration-200 transform translate-x-4 lg:translate-x-8 -translate-y-12 hover:scale-102 hidden md:block">
+          <a href="/match" class="transform hover:scale-102">
+            <roa-image
+              sizes="(max-width: 640px) 50vw, 20vw"
+              :w="400"
+              :h="null"
+              src="https://assets.returnonart.com/artworks/4f69d1a89eead7fdee346b5cbaf7e764j.jpg"
+            ></roa-image>
+          </a>
+          <p class="paragraph uppercase mt-4">Fabio La Fauci</p>
+          <p class="paragraph-sm text-gray-solid">Head</p>
+        </li>
+        <li class="relative z-10 w-1/2 md:w-auto transition-transform duration-200 transform hover:scale-102">
+          <div class="relative">
+            <roa-image
+              sizes="(max-width: 640px) 50vw, 20vw"
+              class="absolute md:hidden inset-0 transform origin-bottom-left overflow-hidden -rotate-6"
+              :w="400"
+              :h="null"
+              src="https://assets.returnonart.com/artworks/4f69d1a89eead7fdee346b5cbaf7e764j.jpg"
+            ></roa-image>
+            <a href="/match" class="transform hover:scale-102">
+              <roa-image
+                sizes="(max-width: 640px) 50vw, 20vw"
+                class="relative"
+                :w="400"
+                :h="null"
+                src="https://assets.returnonart.com/artworks/4-1608131122.jpg"
+              ></roa-image>
+            </a>
+          </div>
+          <p class="paragraph uppercase mt-4">Golsa Golchini</p>
+          <p class="paragraph-sm text-gray-solid">Conversations</p>
+        </li>
+        <li class="transition-transform duration-200 transform -translate-x-4 lg:-translate-x-8 translate-y-12 hover:scale-102 hidden md:block">
+          <a href="/match">
+            <roa-image
+              sizes="(max-width: 640px) 50vw, 20vw"
+              :w="400"
+              :h="null"
+              src="https://assets.returnonart.com/artworks/avp_694.JPG"
+            ></roa-image>
+          </a>
+          <p class="paragraph uppercase mt-4">Alex Voinea</p>
+          <p class="paragraph-sm text-gray-solid">AVP 694</p>
+        </li>
+        <li
+          class="flex-shrink-0 text-gray-darkest flex flex-col items-center justify-center"
+        >
+          <roa-icon-link href="/match" icon="arrow-right" round></roa-icon-link>
+          <p class="h3 handwritten">Like</p>
+        </li>
+      </ul>
+      <roa-link-button href="/match" class="w-full md:hidden">
+        Start
+      </roa-link-button>
+    </section>
+    
+    {{# NEWSLETTER SUBSCRIPTION SECTION #}}
+    <section class="-mx-4 sm:-mx-8 xl:-mx-16 py-16 px-4 sm:px-8 md:px-16 flex bg-gray-darkest text-white justify-center">
+      <div class="max-w-xl w-full" data-aos="appear">
+        <h2 class="h2 uppercase text-center">
+          <span class="text-gray-solid">Discover</span>
+          <span class="handwritten">Art</span>
+        </h2>
+        <p class="h4 m-8 text-center">
+          Stay up to date on new arrivals, exclusive releases, up-and-coming artists, and much more.
+        </p>
+        <newsletter-subscription-form cta="Keep me posted" user-id="{{ env:MAILCHIMP_USER_ID }}" list-id="{{ env:MAILCHIMP_LIST_ID }}" white></newsletter-subscription-form>
+      </div>
+    </section>
+
+    {{# TESTIMONIALS SECTION #}}
+    <testimonials-slider 
+      data-aos="appear"
+      :testimonials="[
+        {{ testimonials }}
+          {
+            title: '{{ title | smartypants }}',
+            name: '{{ author | smartypants }}',
+            text: '{{ text | smartypants }}',
+            url: '{{ url }}',
+          },
+        {{ /testimonials }}
+      ]"
+    ></testimonials-slider>
+  </div>
+</home-page>

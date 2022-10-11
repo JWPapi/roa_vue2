@@ -1,0 +1,163 @@
+<artists-page 
+  inline-template
+  {{ collection:artworks inventory:gt="0" unlisted:isnt="true" sort="random" limit="1" }}
+    :initial-data="{
+      artist: {
+        url:'{{ artist | get:url }}',
+        title: '{{ artist | get:title | smartypants }}'
+      },
+      artwork: {
+        image: '{{ image }}',
+        title: '{{ title | smartypants }}',
+        year: '{{ year }}',
+        url: '{{ url }}',
+      }
+    }"
+  {{ /collection:artworks }}
+  v-cloak
+>
+  <section class="mt-8 lg:mt-16 mb-16">
+    <div class="md:hidden mb-8">
+      {{ partial:breadcrumbs }}
+    </div>
+    <h2 class="h3 text-gray-darkest"><span class="handwritten">Featured</span></h2>
+    <div class="mb-16 mt-8 -mx-4 sm:-mx-8 xl:-mx-16">
+      <slider-wrapper preset="artworks" inset-buttons>
+        {{ relate:featured_artists }}
+          <artist-collection-list-item
+            {{ if cover_image }}
+              image="{{ cover_image }}"
+              focalpoint="{{ cover_image | focus }}"
+            {{ elseif featured_artwork }}
+              image="{{ featured_artwork | get:image }}"
+              focalpoint="{{ featured_artwork | get:image | focus }}"
+            {{ else }}
+              {{ collection:artworks :artist:is='id' unlisted:isnt='true' limit='1' }}
+                image="{{ image }}"
+                focalpoint="{{ image | focus }}"
+              {{ /collection:artworks }}
+            {{ /if }}
+            url="{{ url }}"
+            artist="{{ title | smartypants }}"
+            nationality="{{ nationality | smartypants }}"
+            birth-year="{{ birth_year }}"
+          ></artist-collection-list-item>
+        {{ /relate:featured_artists }}
+      </slider-wrapper>
+    </div>
+    <div class="flex mt-8">
+      <h2 class="h3 text-gray-darkest flex-grow"><span class="handwritten">Our artists</span></h2>
+      <div class="md:hidden flex">
+        <roa-icon-button icon="search" @click="showSearch = !showSearch"></roa-icon-button>
+        <roa-icon-radio
+          :options="[
+            {icon: 'lines', value: 'rows', label: 'Show rows layout'},
+            {icon: 'grid', value: 'grid', label: 'Show grid layout'}, 
+          ]"
+          name="view"
+          v-model="view"
+        ></roa-icon-radio>
+      </div>
+    </div>
+    <div class="md:flex my-8 -mx-3">
+      <roa-input type="search" novalidate label="Search" required v-model="search" class="flex-1 m-3 md:max-w-sm" :class="{'hidden md:block': !showSearch}"></roa-input>
+      <roa-select label="Nationality" novalidate v-model="nationality" class="flex-1 m-3 md:max-w-sm">
+        {{ site:nationalities }}
+            <option value="{{ nationality | smartypants }}">{{ nationality }}</option>
+        {{ /site:nationalities }}
+      </roa-select>
+      <roa-select label="Order" novalidate v-model="order" required class="flex-1 m-3 md:max-w-sm">
+        <option :value="orderOption.value" v-for="orderOption in orderOptions" :key="orderOption.value">@{{ orderOption.label }}</option>
+      </roa-select>
+      <roa-icon-radio
+        :options="[
+          {icon: 'lines', value: 'rows', label: 'Show rows layout'},
+          {icon: 'grid', value: 'grid', label: 'Show grid layout'}, 
+        ]"
+        name="view"
+        v-model="view"
+        class="xl:flex-grow justify-end items-center hidden md:flex"
+      ></roa-icon-radio>
+    </div>
+    <transition name="fade" mode="out-in">
+      <div v-if="view === 'rows' && !loading" class="flex items-start mb-16">
+        <nav class="sticky top-0 py-2">
+          <ul class="flex flex-col text-gray-solid mr-4" :class="order.startsWith('alphabet') || 'pointer-events-none opacity-25'" >
+            <li v-for="char in characters" :key="char">
+              <button @click="scrollToItem(char)" class="px-2 focus:outline-none" :class="{'text-gray-darkest font-medium': char === currentCharacter}">@{{ char }}</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="flex-1 relative transform w-full md:w-1/2 mr-4">
+          <ul v-if="sortedArtists.length" class="relative overflow-y-auto md:h-160 py-2 md:pb-16" ref="rows" @scroll="updateScroll" style="scroll-behavior: smooth;">
+            <li
+              v-for="artist in sortedArtists"
+              :key="artist.id"
+              class="md:pt-16 first:pt-0 md:-mb-16"
+              :data-char="artist.title.split(' ').pop()[0]"
+            >
+              <a
+                :href="artist.url"
+                class="py-1 flex h4-uppercase text-gray-darkest"
+                @mouseenter="updateArtist({
+                  artist,
+                  artwork: artist.featured_artwork
+                })"
+              >
+                <span class="flex-grow">@{{ artist.title }}</span>
+                <transition name="fade">
+                  <roa-icon 
+                    class="-my-2" 
+                    v-if="currentArtist && currentArtist.title === artist.title" 
+                    name="arrow-right"
+                    bordered
+                  ></roa-icon>
+                </transition>
+              </a>
+            </li>
+          </ul>
+          <p v-else class="paragraph">
+            No artists for your selection
+          </p>
+          <transition name="fade">
+            <div v-if="!scrollTop && sortedArtists.length > 10" aria-hidden="true" class="hidden md:block fixed pointer-events-none inset-x-0 top-0 h-32 bg-gradient-to-b from-white to-transparent">
+            </div>
+          </transition>
+          <transition name="fade">
+            <div v-if="!scrollBottom && sortedArtists.length > 10" aria-hidden="true" class="hidden md:block fixed pointer-events-none inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent">
+            </div>
+          </transition>
+        </div>
+        <div class="hidden md:block w-1/2 sticky top-0 py-2 h-160" ref="image">
+          <roa-image v-if="currentArtwork" sizes="50vw" img-class="object-contain object-left w-full max-h-160" :w="500" :h="null" :src="currentArtwork.image"></roa-image>
+          <p v-if="currentArtwork" class="paragraph-sm mt-2">
+            <span class="uppercase text-gray-darkest">
+              @{{ currentArtist.title }}
+            </span>
+            <a :href="currentArtwork.url || `artworks/${currentArtwork.id}`" class="text-gray-solid">
+              @{{ currentArtwork.title }}, @{{ currentArtwork.year }}
+            </a>
+          </p>
+        </div>
+      </div>
+      <ul v-else-if="!loading && sortedArtists.length" class="artworks-grid" ref="grid">
+        <artist-collection-list-item
+          v-for="artist in extendedArtists"
+          :key="artist.id"
+          data-aos="appear"
+          class="p-2 w-1/2 md:w-1/3 lg:w-1/4"
+          :image="artist.image"
+          :focalpoint="artist.focalpoint"
+          :url="artist.url"
+          :artist="artist.title"
+          :nationality="artist.nationality"
+          :birth-year="artist.birth_year"
+        ></artist-collection-list-item>
+      </ul>
+      <roa-logo v-else-if="loading" type="spinning" class="mx-auto my-16"></roa-logo>
+      <p v-else class="paragraph">
+        No artists for your selection
+      </p>
+    </transition>
+  </section>
+</artists-page>

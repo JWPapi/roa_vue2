@@ -1,0 +1,80 @@
+{{ section:scripts }}
+<script>
+  function getDescription(option, unit = "", showDimensions = false) {
+      const formatter = new Intl.NumberFormat();
+      const f = (number) =>
+        showDimensions
+          ? `${formatter.format(number)} × ${formatter.format(
+              number
+            )}${unit}`
+          : formatter.format(number) + unit;
+      if (option.min && option.max)
+        return `Between ${f(option.min)} and ${f(option.max)}`;
+      else if (option.min) return `Above ${f(option.min)}`;
+      else if (option.max) return `Below ${f(option.max)}`;
+    };
+  window.roa.nationalities = [
+  {{ site:nationalities }}
+    "{{ nationality }}",
+  {{ /site:nationalities }}
+  ];
+  window.roa.categories = {{ site:categories }};
+  window.roa.options = {
+      sort: [
+        { value: "recent", label: "Most recent" },
+        { value: "price", label: "Price: Low to High" },
+        { value: "price:desc", label: "Price: High to Low" },
+        { value: "size", label: "Size: Small to Large" },
+        { value: "size:desc", label: "Size: Large to Small" },
+      ],
+      size: [
+        {{ sizes }}
+          {
+            value: "{{title}}",
+            {{ if min }}
+            min: {{min}},
+            {{ /if }}
+            {{ if max }}
+            max: {{max}},
+            {{ /if }}
+          },
+        {{ /sizes }}
+      ].map((option) => ({
+        ...option,
+        subtitle: getDescription(option, " cm", true),
+      })),
+      price: [
+        {{ prices }}
+          {
+            value: "{{title}}",
+            {{ if min }}
+            min: {{min}},
+            {{ /if }}
+            {{ if max }}
+            max: {{max}},
+            {{ /if }}
+          },
+        {{ /prices }}
+      ].map((option) => ({
+        ...option,
+        subtitle: getDescription(option, "€"),
+      })),
+      category: window.roa.categories,
+      nationality: window.roa.nationalities.filter(Boolean),
+    };
+    window.roa.defaultQueryOptions = {
+      search: "",
+      sizes: [],
+      prices: [],
+      categories: [],
+      artists: [],
+      nationalities: [],
+      sort: window.roa.options.sort[0],
+    };
+</script>
+{{ /section:scripts }}
+<artworks-page v-cloak>
+  <template #breadcrumbs>
+    {{ partial:breadcrumbs }}
+  </template>
+</artworks-page>

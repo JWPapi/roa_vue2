@@ -1,0 +1,12 @@
+<script>
+  window.roa = {
+    firebase: {
+      apiKey: "{{ env:GOOGLE_API_KEY }}",
+      appId: "{{ env:GOOGLE_FIREBASE_ID }}",
+      authDomain: "{{ env:GOOGLE_FIREBASE_AUTH_DOMAIN }}",
+      projectId: "{{ env:GOOGLE_PROJECT_ID }}",
+    },
+    sentry: "{{ env:SENTRY_DSN }}",
+    matchEndpoint: "https://recommendations{{ if environment !== 'production' }}.staging{{ /if }}.returnonart.com/api/v1/match",
+  };
+</script>

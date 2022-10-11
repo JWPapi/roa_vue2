@@ -1,0 +1,67 @@
+<collections-page inline-template>
+  <section class="mt-6 lg:mt-16">
+    <div class="md:hidden mb-4">
+      {{ partial:breadcrumbs }}
+    </div>
+    <h2 class="h3 mb-16">
+      <span class="handwritten">
+        Featured
+      </span>
+    </h2>
+    <div class="-mx-4 sm:-mx-8 xl:-mx-16 mt-8 mb-16">
+      <slider-wrapper 
+        preset="feature"
+        inset-buttons
+      >
+        {{ get_content from="/" }}
+          {{ relate:collections }}
+            <collection-list-item 
+              url="{{ url }}"
+              {{ if cover_image }}
+                image="{{ cover_image }}"
+                focalpoint="{{ cover_image | focus }}"
+              {{ else }}
+                {{ relate:artworks filter="private_view" limit='1' }}
+                  image="{{ image }}"
+                  focalpoint="{{ image | focus }}"
+                {{ /relate:artworks }}
+              {{ /if }}
+              featured
+              title="{{ title | smartypants | widont }}"
+              subtitle="{{ subtitle | smartypants | widont }}"
+            ></collection-list-item>
+          {{ /relate:collections }}
+        {{ /get_content }}
+      </slider-wrapper>
+    </div>
+    <h2 class="h3-uppercase">
+      Discover all curated collections
+    </h2>
+    <ul class="artworks-grid py-8 -m-3">
+      {{ collection:collections sort="date:desc" unlisted:isnt="true" }}
+      <li class="group p-6 w-full sm:w-1/2 lg:w-1/3 2xl:w-1/4">
+        <a href="{{ url }}" class="pb-ratio h-0 w-full block overflow-hidden">
+          <roa-image
+            {{ if cover_image }}
+              src="{{ cover_image }}"
+              focalpoint="{{ cover_image | focus }}"
+            {{ else }}
+              {{ relate:artworks filter="private_view" limit='1' }}
+                src="{{ image }}"
+                focalpoint="{{ image | focus }}"
+              {{ /relate:artworks }}
+            {{ /if }}
+            :w="1000"
+            :h="625"
+            sizes="(max-width: 820px) 50vw, (max-width: 1060px) 33vw, (max-width: 1600px) 25vw, 20vw"
+            img-class="w-full object-cover transform transition-transform duration-500 group-hover:scale-105 group-focus:scale-105"
+          />
+        </a>
+        <a href="{{ url }}" class="h4-uppercase block mt-4 mb-8">
+          {{ title | widont }}
+        </a>
+      </li>
+      {{ /collection:collections }}
+    </ul>
+  </section>
+</collections-page>

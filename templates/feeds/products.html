@@ -1,0 +1,26 @@
+<rss xmlns:g="http://base.google.com/ns/1.0" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+    <channel>
+        <title>{{ site_name }}</title>
+        <link>https://returnonart.com</link>
+        <description>{{ site_description }}</description>
+        {{ collection:artworks inventory:gt="0" unlisted:not="true" sort="date:desc" supplement_taxonomies="false" }}
+        <item>
+            <g:id>{{ id }}</g:id>
+            <title><![CDATA[{{ artist | get:title }} – {{ title }}]]></title>
+            <description><![CDATA[{{ artist | get:title }} – {{ title }}{{ year ensure_left=" (" ensure_right=")" }}, {{ medium }}, {{ width }} &times; {{ height }} cm ({{ width | cm2inch }} &times; {{ height | cm2inch }} in)]]></description>
+            <link>{{ permalink }}</link>
+            <g:image_link>{{ image }}</g:image_link>
+            <media:content medium="image" url="{{ image }}" />
+            <g:brand>{{ artist | get:title | cdata }}</g:brand>
+            <g:availability>in stock</g:availability>
+            <g:condition>new</g:condition>
+            <g:price>{{ price format_number="2|.|" }} EUR</g:price>
+            {{ if {site:shipping_country} }}
+            <g:ships_from_country>{{ site:shipping_country }}</g:ships_from_country>
+            {{ /if }}
+            <g:google_product_category>9</g:google_product_category>{{# Home &amp; Garden &gt; Decor &gt; Artwork see. https://support.google.com/merchants/answer/6324436 #}}
+            <pubDate>{{ date format="r" }}</pubDate>
+        </item>
+        {{ /collection:artworks }}
+    </channel>
+</rss>

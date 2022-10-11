@@ -1,0 +1,44 @@
+<private-view-page
+	{{ if artists }}
+		:data="[
+		{{ artists }}
+		 	{
+			artworks: [
+			{{ relate:artworks show_future="true" }}
+				{{ unless no_results }}
+					{
+						id: '{{ id }}',
+						title: '{{ title | smartypants }}',
+						medium: '{{ medium | smartypants }}',
+						price: {{ price }},
+						shadow: Boolean({{ shadow }}),
+						url: '{{ url }}',
+						image: '{{ image }}',
+						available: Boolean({{ inventory }}),
+						{{ relate:artist show_unpublished="true" }}
+							artist: {
+								'title': '{{ title }}',
+								'url': '{{ url }}'
+							},
+						{{ /relate:artist }}
+					},
+				{{ /unless }}
+			{{ /relate:artworks }}
+			],
+			artist: {
+					title: '{{ artist | get:title | smartypants }}',
+					slug: '{{ artist | get:slug }}',
+					url: '{{ artist | get:url }}',
+					artist_spotlight: '{{ artist | get:artist_spotlight | get:url }}',
+					photo: '{{ artist | get:photo }}',
+					description: `{{ artist | get:description | smartypants | markdown | sanitize }}`,
+			},
+		 },
+		{{ /artists }}
+		]"
+	{{ /if }}
+	{{ if (start_time && start_time|is_future) }}
+		start-time="{{ start_time | format:c }}"
+	{{ /if }}
+>
+</private-view-page>

@@ -1,0 +1,12 @@
+<podcasts-page
+  :episodes="[
+  {{ episodes }}
+    {
+      title: '{{ title | smartypants }}',
+      description: '{{ description | smartypants }}',
+      src: '{{ src }}',
+    },
+  {{ /episodes }}
+]"
+>
+</podcasts-page>

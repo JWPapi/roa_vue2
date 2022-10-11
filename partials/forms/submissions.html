@@ -1,0 +1,127 @@
+<submissions-form inline-template>
+  <div v-if="success" v-cloak class="mt-6">
+    <h3 class="h3-uppercase">Thank you for your application!</h3>
+    <p class="paragraph mt-2">
+      {{ success }}
+    </p>
+  </div>
+  <div v-else>
+
+  {{ institutions where="slug:{institution}" }}
+    <h2 class="h3-uppercase mb-1 mt-6">Apply now</h2>
+    <p class="paragraph mb-6">
+       {{ formtext }}
+    </p>
+  {{ /institutions }}
+    {{ form:create in="submissions" files="true" attr="@submit.prevent:onSubmit|ref:form" }}
+    <div class="flex flex-col w-full">
+      <input type="hidden" name="token" value="{{institution}}">
+      <p class="h4-uppercase mb-2">Contact Information</p>
+      <roa-input
+        class="my-2"
+        label="First name"
+        required
+        autocomplete="given-name"
+        name="first_name"
+        v-model="firstname"
+      ></roa-input>
+      <roa-input
+        class="my-2"
+        label="Last name"
+        required
+        autocomplete="family-name"
+        name="last_name"
+        v-model="lastname"
+      ></roa-input>
+      <roa-input
+        class="my-2"
+        label="Artist name"
+        name="artist_name"
+        v-model="artistname"
+      ></roa-input>
+      <roa-input
+        class="my-2"
+        {{ institutions where="slug:{institution}" }}
+          label="Email"
+          {{ if email_domain }}
+          :postfix="'@'+'{{ email_domain }}'"
+          {{ /if }}
+        {{ /institutions }}
+        label="Email"
+        required
+        autocomplete="email"
+        name="email"
+        v-model="email"
+      ></roa-input>
+      <p class="small-caps mx-2" v-if="emailHasDoubleAt">Make sure to only include the first part of your email address.</p>
+      <roa-select required name="country" v-model="country" class="my-2" label="Country of residence">
+        <option v-for="({name},code) in countries" :key="code" :value="code">@{{name}}</option>
+      </roa-select>
+      <roa-input
+        class="my-2"
+        label="Matriculation Number"
+        name="instrmatrnum"
+        required
+        v-model="instrmatrnum"
+      ></roa-input>
+      <roa-select required name="studenttype" v-model="studenttype" class="my-2" label="Student Type">
+        <!-- <option v-for="({name},code) in countries" :key="code" :value="code">@{{name}}</option> -->
+        <option value="Alumni">Alumni</option>
+        <option value="Student">Student</option>
+      </roa-select>
+      <p class="h4-uppercase mt-6 mb-2">About you</p>
+      <roa-input
+        class="my-2"
+        label="Instagram"
+        name="instagram"
+        required
+        v-model="instagram"
+      ></roa-input>
+      <roa-input
+        class="my-2"
+        label="Website"
+        name="website"
+        v-model="website"
+      ></roa-input>
+      <roa-textarea
+        class="mt-2 mb-4"
+        rows="8"
+        required
+        name="message"
+        v-model="message"
+        label="What else do you want us to know?"
+      ></roa-textarea>
+
+      <p class="h4-uppercase mt-6">Portfolio</p>
+      <p class="tiny mb-6">
+        In PDF format
+      </p>
+      <roa-file-input accept="application/pdf" required v-model="portfolio" name="portfolio">
+      </roa-file-input>
+      {{ unless institutions|hasWhere:slug:institution }}
+      <roa-checkbox
+        class="mt-8 mx-4"
+        name="full_time"
+        v-model="isFulltime"
+        label="I'm a full-time artist"
+      ></roa-checkbox>
+      {{ /unless }}
+      <vue-recaptcha
+        :load-recaptcha-script="true"
+        sitekey="{{ recaptcha:site_key }}"
+        size="invisible"
+        @verify="recaptchaVerify"
+        ref="recaptcha"
+      ></vue-recaptcha>
+      <roa-button
+        :loading="loading"
+        :success="success"
+        class="mt-8"
+        type="submit"
+      >
+        Apply
+      </roa-button>
+    </div>
+    {{ /form:create }}
+  </div>
+</submissions-form>
